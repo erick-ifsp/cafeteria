@@ -133,6 +133,10 @@ class FinanceiroController extends Controller
 
         $pdf = Pdf::loadView('financeiro.pdf', $data);
 
+        $senha = $request->input('senha');
+
+        $pdf->setEncryption($senha);
+
         return $pdf->download('relatorio-financeiro.pdf');
     }
 }

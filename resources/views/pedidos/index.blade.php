@@ -50,7 +50,7 @@
                                 <td>
                                     @if($pedido->status === 'Concluído')
                                         <a href="{{ route('pedidos.nota-fiscal', $pedido->id) }}" class="btn"
-                                            style="background-color: #35221B; color: #f1f1f1">Gerar Nota Fiscal</a>
+                                            style="background-color: #35221B; color: #f1f1f1">Gerar Recibo</a>
                                     @else
                                         <span class="text-muted">N/A</span>
                                     @endif
@@ -107,7 +107,7 @@
                                 <td>
                                     @if($pedido->status === 'Concluído')
                                         <a href="{{ route('pedidos.nota-fiscal', $pedido->id) }}" class="btn"
-                                            style="background-color: #35221B; color: #f1f1f1">Gerar Nota Fiscal</a>
+                                            style="background-color: #35221B; color: #f1f1f1">Gerar Recibo</a>
                                     @else
                                         <span class="text-muted">N/A</span>
                                     @endif

@@ -18,8 +18,6 @@
                     Pessoais</a>
                 <a href="#" class="list-group-item list-group-item-action" id="enderecos-tab"
                     style="background-color: #f1f1f1; color: #35221B">Endereços</a>
-                <a href="#" class="list-group-item list-group-item-action" id="cartoes-tab"
-                    style="background-color: #f1f1f1; color: #35221B">Cartões</a>
             </div>
         </div>
 
@@ -130,6 +128,7 @@
                                     <label for="cpf" class="form-label">CPF:</label>
                                     <input type="text" class="form-control" id="cpf" name="cpf"
                                         placeholder="Digite o CPF:" required>
+                                    <div id="cpf-error" class="text-danger mb-3" style="display:none;"></div>
                                 </div>
                                 <input type="hidden" id="endereco_id" name="endereco_id">
                                 <div class="form-group mb-3">
@@ -205,17 +204,64 @@
 
     document.getElementById('enderecoForm').addEventListener('submit', function (e) {
         const cep = document.getElementById('cep').value;
-        const regex = /^124(60|6[1-9]|7[0-9]|8[0-9]|89)-\d{3}$/;
-        const errorDiv = document.getElementById('cep-error');
+        const cpf = document.getElementById('cpf').value;
+        const regexCep = /^124(60|6[1-9]|7[0-9]|8[0-9]|89)-\d{3}$/;
+        const cepErrorDiv = document.getElementById('cep-error');
+        const cpfErrorDiv = document.getElementById('cpf-error');
 
-        if (!regex.test(cep)) {
+        cepErrorDiv.style.display = 'none';
+        cpfErrorDiv.style.display = 'none';
+
+        if (!regexCep.test(cep)) {
             e.preventDefault();
-            errorDiv.textContent = 'Infelizmente não fazemos entrega para esse endereço';
-            errorDiv.style.display = 'block';
-        } else {
-            errorDiv.style.display = 'none';
+            cepErrorDiv.textContent = 'Infelizmente não fazemos entrega para esse endereço';
+            cepErrorDiv.style.display = 'block';
+        }
+
+        if (!validarCPF(cpf)) {
+            e.preventDefault();
+            cpfErrorDiv.textContent = 'CPF inválido. Por favor, insira um CPF válido.';
+            cpfErrorDiv.style.display = 'block';
         }
     });
 
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/[^\d]+/g, '');
+        if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+            return false;
+        }
+
+        let soma = 0;
+        let resto;
+
+        for (let i = 1; i <= 9; i++) {
+            soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+        }
+
+        resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) {
+            resto = 0;
+        }
+        if (resto !== parseInt(cpf.substring(9, 10))) {
+            return false;
+        }
+
+        soma = 0;
+        for (let i = 1; i <= 10; i++) {
+            soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+        }
+
+        resto = (soma * 10) % 11;
+        if (resto === 10 || resto === 11) {
+            resto = 0;
+        }
+
+        if (resto !== parseInt(cpf.substring(10, 11))) {
+            return false;
+        }
+
+        return true;
+    }
 </script>
+
 @endsection

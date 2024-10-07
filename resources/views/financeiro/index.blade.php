@@ -49,10 +49,33 @@
                     style="background-color: #35221B; color: #f1f1f1">Aplicar</button>
 
                 <div class="mt-4">
-                    <a href="{{ route('financeiro.pdf', request()->query()) }}" class="btn btn-block mt-4"
-                        style="background-color: #35221B; color: #f1f1f1">Gerar PDF</a>
+                    <button type="button" class="btn btn-block mt-4" style="background-color: #35221B; color: #f1f1f1"
+                        data-bs-toggle="modal" data-bs-target="#senhaModal">
+                        Gerar Relatório
+                    </button>
                 </div>
             </form>
+        </div>
+
+        <div class="modal fade" id="senhaModal" tabindex="-1" aria-labelledby="senhaModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="senhaModalLabel">Proteção de PDF</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('financeiro.pdf') }}" method="GET">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="senha" class="form-label">Insira sua senha para proteger o PDF:</label>
+                                <input type="password" name="senha" id="senha" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-block mt-4" style="background-color: #35221B; color: #f1f1f1">Gerar Relatório</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-9">
